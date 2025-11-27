@@ -1,0 +1,28 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - data/raw/data.csv
+    - src/prepare.py
+    params:
+    - prepare.seed
+    - prepare.split_ratio
+    outs:
+    - data/processed
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/processed
+    - src/train.py
+    - validation_report.txt
+    params:
+    - train.n_estimators
+    outs:
+    - model.pkl
+  check_data:
+    cmd: python src/check_data.py
+    deps:
+    - data/processed/train.csv
+    - src/check_data.py
+    outs:
+    - validation_report.txt
